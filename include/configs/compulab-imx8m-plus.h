@@ -93,7 +93,7 @@
 	"mmcpart=" __stringify(CONFIG_SYS_MMC_IMG_LOAD_PART) "\0" \
 	"mmcroot=" CONFIG_MMCROOT " rootwait rw\0" \
 	"mmcautodetect=yes\0" \
-	"mmcargs=setenv bootargs ${jh_clk} console=${console} root=${mmcroot} ${raucslot}\0 " \
+	"mmcargs=setenv bootargs ${jh_clk} console=${console} root=${mmcroot}\0 " \
 	"loadbootscript=load mmc ${mmcdev}:${mmcpart} ${loadaddr} ${bsp_script};\0" \
 	"bootscript=echo Running bootscript from mmc ...; " \
 		"source\0" \
@@ -171,7 +171,7 @@
 			"fi; " \
 		"done; " \
 		"if test -n \"${raucslot}\"; then " \
-			"setenv mmcroot /dev/mmcblk2p${raucpart} rootwait rw; " \
+			"setenv mmcroot /dev/mmcblk2p${raucpart} rootwait rw ${raucslot}; " \
 			"saveenv; " \
 		"else " \
 			"echo \"No valid RAUC slot found. Resetting tries to 3\"; " \

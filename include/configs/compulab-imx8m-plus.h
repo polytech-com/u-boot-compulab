@@ -137,7 +137,7 @@
 		"boot_part=1\0" \
 		"root_opt=rootwait rw\0" \
 		"emmc_ul=setenv iface mmc; setenv dev ${emmc_dev}; setenv part ${boot_part};" \
-		"setenv bootargs console=${console} root=${emmc_root} ${root_opt};\0" \
+		"setenv bootargs console=${console} root=${emmc_root} ${root_opt} ${raucslot};\0" \
 		"sd_ul=setenv iface mmc; setenv dev ${sd_dev}; setenv part ${boot_part};" \
 			"setenv bootargs console=${console} root=${sd_root} ${root_opt};\0" \
 		"usb_ul=usb start; setenv iface usb; setenv dev ${usb_dev}; setenv part ${boot_part};" \
@@ -159,19 +159,19 @@
 					"setexpr BOOT_A_LEFT ${BOOT_A_LEFT} - 1; " \
 					"echo \"Found valid RAUC slot A\"; " \
 					"setenv raucslot \"rauc.slot=A\"; " \
-					"setenv raucpart 1;" \
+					"setenv raucpart 2;" \
 				"fi; " \
 			"elif test \"x${BOOT_SLOT}\" = \"xB\"; then " \
 				"if test ${BOOT_B_LEFT} -gt 0; then " \
 					"setexpr BOOT_B_LEFT ${BOOT_B_LEFT} - 1; " \
 					"echo \"Found valid RAUC slot B\"; " \
 					"setenv raucslot \"rauc.slot=B\"; " \
-					"setenv raucpart 3;" \
+					"setenv raucpart 4;" \
 				"fi; " \
 			"fi; " \
 		"done; " \
 		"if test -n \"${raucslot}\"; then " \
-			"setenv mmcroot /dev/mmcblk2p${raucpart} rootwait rw ${raucslot}; " \
+			"setenv emmc_root /dev/mmcblk2p${raucpart}; " \
 			"saveenv; " \
 		"else " \
 			"echo \"No valid RAUC slot found. Resetting tries to 3\"; " \

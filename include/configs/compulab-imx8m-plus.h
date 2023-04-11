@@ -137,7 +137,7 @@
 		"boot_part=1\0" \
 		"root_opt=rootwait rw\0" \
 		"emmc_ul=setenv iface mmc; setenv dev ${emmc_dev}; setenv part ${boot_part};" \
-		"setenv bootargs console=${console} root=${emmc_root} ${root_opt} ${raucslot};\0" \
+		"setenv bootargs console=${console} root=${emmc_root} ${root_opt} init=/sbin/preinit ${raucslot};\0" \
 		"sd_ul=setenv iface mmc; setenv dev ${sd_dev}; setenv part ${boot_part};" \
 			"setenv bootargs console=${console} root=${sd_root} ${root_opt};\0" \
 		"usb_ul=usb start; setenv iface usb; setenv dev ${usb_dev}; setenv part ${boot_part};" \

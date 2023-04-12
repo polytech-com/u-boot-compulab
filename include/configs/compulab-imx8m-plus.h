@@ -159,14 +159,14 @@
 					"setexpr BOOT_A_LEFT ${BOOT_A_LEFT} - 1; " \
 					"echo \"Found valid RAUC slot A\"; " \
 					"setenv raucslot \"rauc.slot=A\"; " \
-					"setenv raucpart 3;" \
+					"setenv raucpart 1;" \
 				"fi; " \
 			"elif test \"x${BOOT_SLOT}\" = \"xB\"; then " \
 				"if test ${BOOT_B_LEFT} -gt 0; then " \
 					"setexpr BOOT_B_LEFT ${BOOT_B_LEFT} - 1; " \
 					"echo \"Found valid RAUC slot B\"; " \
 					"setenv raucslot \"rauc.slot=B\"; " \
-					"setenv raucpart 4;" \
+					"setenv raucpart 2;" \
 				"fi; " \
 			"fi; " \
 		"done; " \

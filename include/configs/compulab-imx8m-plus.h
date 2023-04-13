@@ -137,7 +137,7 @@
 		"boot_part=1\0" \
 		"root_opt=rootwait rw\0" \
 		"emmc_ul=setenv iface mmc; setenv dev ${emmc_dev}; setenv part ${boot_part};" \
-		"setenv bootargs console=${console} root=${emmc_root} ${root_opt} init=/sbin/preinit ${raucslot};\0" \
+		"setenv bootargs console=${console} root=${emmc_root} ${root_opt} init=/sbin/preinit ${rauc_slot};\0" \
 		"sd_ul=setenv iface mmc; setenv dev ${sd_dev}; setenv part ${boot_part};" \
 			"setenv bootargs console=${console} root=${sd_root} ${root_opt};\0" \
 		"usb_ul=usb start; setenv iface usb; setenv dev ${usb_dev}; setenv part ${boot_part};" \
@@ -150,28 +150,30 @@
 	"rauc_ul=test -n \"${BOOT_ORDER}\" || setenv BOOT_ORDER \"A B\"; " \
 		"test -n \"${BOOT_A_LEFT}\" || setenv BOOT_A_LEFT 3; " \
 		"test -n \"${BOOT_B_LEFT}\" || setenv BOOT_B_LEFT 3; " \
-		"setenv raucslot; " \
+		"setenv rauc_slot; " \
 		"for BOOT_SLOT in \"${BOOT_ORDER}\"; do " \
-			"if test \"x${raucslot}\" != \"x\"; then " \
+			"if test \"x${rauc_slot}\" != \"x\"; then " \
 				"echo \"Skip remaining slots\"; " \
 			"elif test \"x${BOOT_SLOT}\" = \"xA\"; then " \
 				"if test ${BOOT_A_LEFT} -gt 0; then " \
 					"setexpr BOOT_A_LEFT ${BOOT_A_LEFT} - 1; " \
 					"echo \"Found valid RAUC slot A\"; " \
-					"setenv raucslot \"rauc.slot=A\"; " \
-					"setenv raucpart 3;" \
+					"setenv rauc_slot \"rauc.slot=A\"; " \
+					"setenv rauc_part 3;" \
+					"setenv boot_part 1;" \
 				"fi; " \
 			"elif test \"x${BOOT_SLOT}\" = \"xB\"; then " \
 				"if test ${BOOT_B_LEFT} -gt 0; then " \
 					"setexpr BOOT_B_LEFT ${BOOT_B_LEFT} - 1; " \
 					"echo \"Found valid RAUC slot B\"; " \
-					"setenv raucslot \"rauc.slot=B\"; " \
-					"setenv raucpart 5;" \
+					"setenv rauc_slot \"rauc.slot=B\"; " \
+					"setenv rauc_part 5;" \
+					"setenv boot_part 2;" \
 				"fi; " \
 			"fi; " \
 		"done; " \
-		"if test -n \"${raucslot}\"; then " \
-			"setenv emmc_root /dev/mmcblk2p${raucpart}; " \
+		"if test -n \"${rauc_slot}\"; then " \
+			"setenv emmc_root /dev/mmcblk2p${rauc_part}; " \
 			"saveenv; " \
 		"else " \
 			"echo \"No valid RAUC slot found. Resetting tries to 3\"; " \

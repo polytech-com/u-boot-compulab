@@ -145,14 +145,14 @@
 		"ulfdt=if test ${boot_fdt} = yes || test ${boot_fdt} = try; then " \
 			"load ${iface} ${dev}:${part} ${fdt_addr_r} ${fdtfile}; fi;\0" \
 		"bootlist=rauc_ul emmc_ul\0" \
-	"rauc_ul=test -n \"${BOOT_ORDER}\" || setenv BOOT_ORDER \"A B\"; " \
+	"rauc_ul=test -n \"${BOOT_ORDER}\" || setenv BOOT_ORDER A B; " \
 		"test -n \"${BOOT_A_LEFT}\" || setenv BOOT_A_LEFT 3; " \
 		"test -n \"${BOOT_B_LEFT}\" || setenv BOOT_B_LEFT 3; " \
 		"setenv rauc_slot; " \
-		"for BOOT_SLOT in \"${BOOT_ORDER}\"; do " \
-			"if test \"x${rauc_slot}\" != \"x\"; then " \
+		"for BOOT_SLOT in ${BOOT_ORDER}; do " \
+			"if test -n \"${rauc_slot}\"; then " \
 				"echo \"Skip remaining slots\"; " \
-			"elif test \"x${BOOT_SLOT}\" = \"xA\"; then " \
+			"elif test \"${BOOT_SLOT}\" = \"A\"; then " \
 				"if test ${BOOT_A_LEFT} -gt 0; then " \
 					"setexpr BOOT_A_LEFT ${BOOT_A_LEFT} - 1; " \
 					"echo \"Found valid RAUC slot A\"; " \
@@ -160,7 +160,7 @@
 					"setenv rauc_part 3;" \
 					"setenv boot_part 1;" \
 				"fi; " \
-			"elif test \"x${BOOT_SLOT}\" = \"xB\"; then " \
+			"elif test \"${BOOT_SLOT}\" = \"B\"; then " \
 				"if test ${BOOT_B_LEFT} -gt 0; then " \
 					"setexpr BOOT_B_LEFT ${BOOT_B_LEFT} - 1; " \
 					"echo \"Found valid RAUC slot B\"; " \

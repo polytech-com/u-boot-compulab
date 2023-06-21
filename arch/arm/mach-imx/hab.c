@@ -897,8 +897,8 @@ int imx_hab_authenticate_image(uint32_t ddr_start, uint32_t image_size,
 	if (!imx_hab_is_enabled())
 		puts("hab fuse not enabled\n");
 
-	printf("\nAuthenticate image from DDR location 0x%x...\n",
-	       ddr_start);
+	printf("\nAuthenticate image from DDR location 0x%x:0x%x\n",
+	       ddr_start, ddr_start+image_size);
 
 	hab_caam_clock_enable(1);
 

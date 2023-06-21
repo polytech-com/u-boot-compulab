@@ -780,7 +780,7 @@ static bool csf_is_valid(struct ivt *ivt, ulong start_addr, size_t bytes)
 
 	/* Verify if CSF Header exist */
 	if (*csf_hdr != HAB_CMD_HDR) {
-		puts("Error: CSF header command not found\n");
+		puts("Error: CSF header command not found (ulong)ivt->csf = 0x%x\n", (ulong)ivt->csf);
 		return false;
 	}
 
@@ -899,6 +899,7 @@ int imx_hab_authenticate_image(uint32_t ddr_start, uint32_t image_size,
 
 	printf("\nAuthenticate image from DDR location 0x%x:0x%x\n",
 	       ddr_start, ddr_start+image_size);
+	printf("\nivt_offset = 0x%x\n", ivt_offset);
 
 	hab_caam_clock_enable(1);
 
@@ -928,7 +929,7 @@ int imx_hab_authenticate_image(uint32_t ddr_start, uint32_t image_size,
 		       ddr_start, ddr_start + (ulong)bytes);
 		goto hab_exit_failure_print_status;
 	}
-#ifdef DEBUG
+#ifdef 1
 	printf("\nivt_offset = 0x%x, ivt addr = 0x%lx\n", ivt_offset, ivt_addr);
 	printf("ivt entry = 0x%08x, dcd = 0x%08x, csf = 0x%08x\n", ivt->entry,
 	       ivt->dcd, ivt->csf);

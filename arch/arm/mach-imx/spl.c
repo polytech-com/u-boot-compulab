@@ -284,7 +284,7 @@ __weak void __noreturn jump_to_image_no_args(struct spl_image_info *spl_image)
 	image_entry_noargs_t image_entry =
 		(image_entry_noargs_t)(unsigned long)spl_image->entry_point;
 
-	debug("image entry point: 0x%lX\n", spl_image->entry_point);
+	printf("image entry point: 0x%lX\n", spl_image->entry_point);
 
 	if (spl_image->flags & SPL_FIT_FOUND) {
 		image_entry();
@@ -295,6 +295,7 @@ __weak void __noreturn jump_to_image_no_args(struct spl_image_info *spl_image)
 		 * CSF from the actual filesize
 		 */
 		offset = spl_image->size - CONFIG_CSF_SIZE;
+		printf("%s\n", __FUNCTION__);
 		if (!imx_hab_authenticate_image(spl_image->load_addr,
 						offset + IVT_SIZE +
 						CSF_PAD_SIZE, offset)) {
@@ -437,11 +438,13 @@ void board_spl_fit_post_load(const void *fit, struct spl_image_info *spl_image)
 {
 	if (IS_ENABLED(CONFIG_IMX_HAB) && !(spl_image->flags & SPL_FIT_BYPASS_POST_LOAD)) {
 		u32 offset = ALIGN(fdt_totalsize(fit), 0x1000);
-
+		printf("%s\n", __FUNCTION__);
 		if (imx_hab_authenticate_image((uintptr_t)fit,
 					       offset + IVT_SIZE + CSF_PAD_SIZE,
 					       offset)) {
 			panic("spl: ERROR:  image authentication unsuccessful\n");
+		} else {
+			printf("auth ok %s\n", __FUNCTION__);
 		}
 	}
 #if defined(CONFIG_IMX8MP) || defined(CONFIG_IMX8MN)

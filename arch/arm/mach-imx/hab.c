@@ -618,11 +618,14 @@ static int do_authenticate_image(struct cmd_tbl *cmdtp, int flag, int argc,
 	else
 		ivt_offset = hextoul(argv[3], NULL);
 
+	printf("%s\n", __FUNCTION__);
 	rcode = imx_hab_authenticate_image(addr, length, ivt_offset);
 	if (rcode == 0)
 		rcode = CMD_RET_SUCCESS;
 	else
 		rcode = CMD_RET_FAILURE;
+
+	printf("auth status: %d from: %s\n", __FUNCTION__);
 
 	return rcode;
 }
@@ -1010,5 +1013,8 @@ int authenticate_image(u32 ddr_start, u32 raw_image_size)
 					~(ALIGN_SIZE - 1);
 	bytes = ivt_offset + IVT_SIZE + CSF_PAD_SIZE;
 
-	return imx_hab_authenticate_image(ddr_start, bytes, ivt_offset);
+	printf("in %s\n", __FUNCTION__);
+	int ret = imx_hab_authenticate_image(ddr_start, bytes, ivt_offset);
+	printf("auth status = %d from %s\n", ret, __FUNCTION__);
+	return ret;
 }

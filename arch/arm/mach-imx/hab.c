@@ -783,7 +783,7 @@ static bool csf_is_valid(struct ivt *ivt, ulong start_addr, size_t bytes)
 
 	/* Verify if CSF Header exist */
 	if (*csf_hdr != HAB_CMD_HDR) {
-		printf("Error: CSF header command not found (ulong)ivt->csf = 0x%x\n", (ulong)ivt->csf);
+		printf("Error: CSF header command not found (ulong)ivt->csf = 0x%x hdr = 0x%x\n", (ulong)ivt->csf, *csf_hdr);
 		return false;
 	}
 
@@ -839,6 +839,9 @@ static int validate_ivt(struct ivt *ivt_initial)
 		puts("Error: Image's start address is not 4 byte aligned\n");
 		return 0;
 	}
+
+	printf("validating ivt hdr... magic=0x%x length=0x%02x version=0x%x\n",
+	       ivt_hdr->magic, ivt_hdr->length, ivt_hdr->version);
 
 	/* Check IVT fields before allowing authentication */
 	if ((!verify_ivt_header(ivt_hdr)) && \

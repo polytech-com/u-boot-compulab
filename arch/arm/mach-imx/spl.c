@@ -438,7 +438,7 @@ void board_spl_fit_post_load(const void *fit, struct spl_image_info *spl_image)
 {
 	if (IS_ENABLED(CONFIG_IMX_HAB) && !(spl_image->flags & SPL_FIT_BYPASS_POST_LOAD)) {
 		u32 offset = ALIGN(fdt_totalsize(fit), 0x1000);
-		printf("%s\n", __FUNCTION__);
+		printf("auth from: %s\n", __FUNCTION__);
 		if (imx_hab_authenticate_image((uintptr_t)fit,
 					       offset + IVT_SIZE + CSF_PAD_SIZE,
 					       offset)) {

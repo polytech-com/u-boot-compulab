@@ -906,10 +906,14 @@ int imx_hab_authenticate_image(uint32_t ddr_start, uint32_t image_size,
 	printf("\nAuthenticate image from DDR location 0x%x:0x%x\n",
 	       ddr_start, ddr_start+image_size);
 	printf("\nivt_offset = 0x%x\n", ivt_offset);
-	get_hab_status();
 
 	hab_caam_clock_enable(1);
 
+#if !defined(CONFIG_SPL_BUILD)
+	get_hab_status();
+#else
+	printf("No HAB status from SPL\n");
+#endif
 	/* Calculate IVT address header */
 	ivt_addr = (ulong) (ddr_start + ivt_offset);
 	ivt = (struct ivt *)ivt_addr;

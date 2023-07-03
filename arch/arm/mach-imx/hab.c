@@ -444,6 +444,7 @@ static void display_event(uint8_t *event_data, size_t bytes)
 
 	process_event_record(event_data, bytes);
 }
+#endif
 
 static int get_hab_status(void)
 {
@@ -462,7 +463,7 @@ static int get_hab_status(void)
 	if (hab_rvt_report_status(&config, &state) != HAB_SUCCESS) {
 		printf("\nHAB Configuration: 0x%02x, HAB State: 0x%02x\n",
 		       config, state);
-
+#if !defined(CONFIG_SPL_BUILD)
 		/* Display HAB events */
 		while (hab_rvt_report_event(HAB_STS_ANY, index, event_data,
 					&bytes) == HAB_SUCCESS) {
@@ -475,6 +476,7 @@ static int get_hab_status(void)
 			bytes = sizeof(event_data);
 			index++;
 		}
+#endif
 	}
 	/* Display message if no HAB events are found */
 	else {
@@ -484,6 +486,8 @@ static int get_hab_status(void)
 	}
 	return 0;
 }
+
+#if !defined(CONFIG_SPL_BUILD)
 
 #ifdef CONFIG_MX7ULP
 

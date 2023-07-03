@@ -2,6 +2,7 @@
 /*
  * Copyright 2018-2019, 2022 NXP
  */
+#error "no need"
 
 #include <common.h>
 #include <command.h>

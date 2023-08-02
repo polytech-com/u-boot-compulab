@@ -165,7 +165,7 @@
 					"setexpr BOOT_B_LEFT ${BOOT_B_LEFT} - 1; " \
 					"echo \"Found valid RAUC slot B\"; " \
 					"setenv rauc_slot \"rauc.slot=B\"; " \
-					"setenv rauc_part 5;" \
+					"setenv rauc_part 4;" \
 					"setenv boot_part 2;" \
 				"fi; " \
 			"fi; " \

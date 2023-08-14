@@ -79,7 +79,8 @@ static int _spl_dram_init(void)
 	if (lpddr4_tcm_desc->sign == VALID) {
 		/* get ddr type from the eeprom if not in tcm scan mode */
 		ddr_info = cl_eeprom_get_ddrinfo();
-		subind = cl_eeprom_get_subind();
+		/* force 4 GB memory due to wrong produced EEPROM data */
+		subind = 4;
 
 		printf("DDRINFO: EEPROM VALID DATA [ [ %x ] = %x %x \n",
                 lpddr4_tcm_desc->sign, ddr_info, subind);

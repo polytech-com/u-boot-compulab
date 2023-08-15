@@ -7,7 +7,6 @@ choice
 
 config DRAM_D2D4
 	bool "D2,D4 dram support"
-	select SAMSUNG_2G
 
 config SAMSUNG_2G
 	bool "Samsung 2G"

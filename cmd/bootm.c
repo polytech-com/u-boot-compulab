@@ -190,7 +190,7 @@ int do_bootm(struct cmd_tbl *cmdtp, int flag, int argc, char *const argv[])
 		break;
 #endif
 	default:
-		printf("do_bootm/B Not valid image format (%d, %p) for Authentication, Please check\n", genimg_get_format((const void *)image_load_addr), image_load_addr);
+		printf("do_bootm/B Not valid image format (%d) for Authentication, Please check\n", genimg_get_format((const void *)image_load_addr));
 		return 1;
 	}
 #endif

@@ -402,15 +402,15 @@ static int bootm_load_os(bootm_headers_t *images, int boot_progress)
 
 	flush_cache(flush_start, ALIGN(load_end, ARCH_DMA_MINALIGN) - flush_start);
 
-	debug("   kernel loaded at 0x%08lx, end = 0x%08lx\n", load, load_end);
+	puts("   kernel loaded at 0x%08lx, end = 0x%08lx\n", load, load_end);
 	bootstage_mark(BOOTSTAGE_ID_KERNEL_LOADED);
 
 	no_overlap = (os.comp == IH_COMP_NONE && load == image_start);
 
 	if (!no_overlap && load < blob_end && load_end > blob_start) {
-		debug("images.os.start = 0x%lX, images.os.end = 0x%lx\n",
+		puts("images.os.start = 0x%lX, images.os.end = 0x%lx\n",
 		      blob_start, blob_end);
-		debug("images.os.load = 0x%lx, load_end = 0x%lx\n", load,
+		puts("images.os.load = 0x%lx, load_end = 0x%lx\n", load,
 		      load_end);
 
 		/* Check what type of image this is. */
@@ -1002,6 +1002,8 @@ static int bootm_host_load_image(const void *fit, int req_image_type,
 			   (void *)data, len, CONFIG_SYS_BOOTM_LEN,
 			   &load_end);
 	free(load_buf);
+	puts("   decomp from here\n");
+
 
 	if (ret) {
 		ret = handle_decomp_error(imape_comp, load_end - 0, ret);

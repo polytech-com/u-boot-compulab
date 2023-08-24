@@ -402,15 +402,15 @@ static int bootm_load_os(bootm_headers_t *images, int boot_progress)
 
 	flush_cache(flush_start, ALIGN(load_end, ARCH_DMA_MINALIGN) - flush_start);
 
-	puts("   kernel loaded at 0x%08lx, end = 0x%08lx\n", load, load_end);
+	printf("   kernel loaded at 0x%08lx, end = 0x%08lx\n", load, load_end);
 	bootstage_mark(BOOTSTAGE_ID_KERNEL_LOADED);
 
 	no_overlap = (os.comp == IH_COMP_NONE && load == image_start);
 
 	if (!no_overlap && load < blob_end && load_end > blob_start) {
-		puts("images.os.start = 0x%lX, images.os.end = 0x%lx\n",
+		printf("images.os.start = 0x%lX, images.os.end = 0x%lx\n",
 		      blob_start, blob_end);
-		puts("images.os.load = 0x%lx, load_end = 0x%lx\n", load,
+		printf("images.os.load = 0x%lx, load_end = 0x%lx\n", load,
 		      load_end);
 
 		/* Check what type of image this is. */

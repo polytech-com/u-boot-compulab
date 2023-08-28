@@ -135,9 +135,9 @@
 		"for src in ${bootlist}; do " \
 			"run ${src}; " \
 		"done; " \
-		"part size mmc ${emmc_dev} ${boot_part} boot_part_size;" \
-		"read mmc ${emmc_dev}:${boot_part} 0x48000000 0 0x$(boot_part_size);" \
-		"bootm 0x48000000;"
+		"part size mmc ${emmc_dev} ${boot_part} boot_part_size; " \
+		"read mmc ${emmc_dev}:${boot_part} 0x48000000 0 0x$(boot_part_size); " \
+		"bootm 0x48000000; "
 #endif
 
 /* Link Definitions */

@@ -90,61 +90,12 @@
 	"mmcdev="__stringify(CONFIG_SYS_MMC_ENV_DEV)"\0" \
 	"mmcpart=" __stringify(CONFIG_SYS_MMC_IMG_LOAD_PART) "\0" \
 	"mmcroot=" CONFIG_MMCROOT " rootwait rw\0" \
-	"mmcautodetect=yes\0" \
-	"mmcargs=setenv bootargs ${jh_clk} console=${console} root=${mmcroot}\0 " \
-	"loadbootscript=load mmc ${mmcdev}:${mmcpart} ${loadaddr} ${bsp_script};\0" \
-	"bootscript=echo Running bootscript from mmc ...; " \
-		"source\0" \
-	"loadimage=load mmc ${mmcdev}:${mmcpart} ${loadaddr} ${image}\0" \
-	"loadfdt=load mmc ${mmcdev}:${mmcpart} ${fdt_addr_r} ${fdtfile}\0" \
-	"mmcboot=echo Booting from mmc ...; " \
-		"run mmcargs; " \
-		"if test ${boot_fit} = yes || test ${boot_fit} = try; then " \
-			"bootm ${loadaddr}; " \
-		"else " \
-			"if run loadfdt; then " \
-				"booti ${loadaddr} - ${fdt_addr_r}; " \
-			"else " \
-				"echo WARN: Cannot load the DT; " \
-			"fi; " \
-		"fi;\0" \
-	"netargs=setenv bootargs ${jh_clk} console=${console} " \
-		"root=/dev/nfs " \
-		"ip=dhcp nfsroot=${serverip}:${nfsroot},v3,tcp\0" \
-	"netboot=echo Booting from net ...; " \
-		"run netargs;  " \
-		"if test ${ip_dyn} = yes; then " \
-			"setenv get_cmd dhcp; " \
-		"else " \
-			"setenv get_cmd tftp; " \
-		"fi; " \
-		"${get_cmd} ${loadaddr} ${image}; " \
-		"if test ${boot_fit} = yes || test ${boot_fit} = try; then " \
-			"bootm ${loadaddr}; " \
-		"else " \
-			"if ${get_cmd} ${fdt_addr_r} ${fdtfile}; then " \
-				"booti ${loadaddr} - ${fdt_addr_r}; " \
-			"else " \
-				"echo WARN: Cannot load the DT; " \
-			"fi; " \
-		"fi;\0" \
-		"emmc_root=/dev/mmcblk2p2\0" \
-		"sd_root=/dev/mmcblk1p2\0" \
-		"usb_root=/dev/sda2\0" \
-		"usb_dev=0\0" \
-		"boot_part=1\0" \
-		"root_opt=rootwait rw\0" \
-		"emmc_ul=setenv iface mmc; setenv dev ${emmc_dev}; setenv part ${boot_part};" \
+	"emmc_root=/dev/mmcblk2p2\0" \
+	"boot_part=1\0" \
+	"root_opt=rootwait rw\0" \
+	"emmc_ul=setenv iface mmc; setenv dev ${emmc_dev}; setenv part ${boot_part};" \
 		"setenv bootargs panic=5 console=${console} root=${emmc_root} ${root_opt} init=/sbin/preinit ${rauc_slot};\0" \
-		"sd_ul=setenv iface mmc; setenv dev ${sd_dev}; setenv part ${boot_part};" \
-			"setenv bootargs console=${console} root=${sd_root} ${root_opt};\0" \
-		"usb_ul=usb start; setenv iface usb; setenv dev ${usb_dev}; setenv part ${boot_part};" \
-			"setenv bootargs console=${console} root=${usb_root} ${root_opt};\0" \
-		"ulbootscript=load ${iface} ${dev}:${part} ${loadaddr} ${script};\0" \
-		"ulimage=load ${iface} ${dev}:${part} ${loadaddr} ${image}\0" \
-		"ulfdt=if test ${boot_fdt} = yes || test ${boot_fdt} = try; then " \
-			"load ${iface} ${dev}:${part} ${fdt_addr_r} ${fdtfile}; fi;\0" \
-		"bootlist=rauc_ul emmc_ul\0" \
+	"bootlist=rauc_ul emmc_ul\0" \
 	"rauc_ul=test -n \"${BOOT_ORDER}\" || setenv BOOT_ORDER A B; " \
 		"test -n \"${BOOT_A_LEFT}\" || setenv BOOT_A_LEFT 3; " \
 		"test -n \"${BOOT_B_LEFT}\" || setenv BOOT_B_LEFT 3; " \
@@ -183,21 +134,10 @@
 	"bsp_bootcmd=echo Running BSP bootcmd ...; " \
 		"for src in ${bootlist}; do " \
 			"run ${src}; " \
-			"env exist boot_opt && env exists bootargs && setenv bootargs ${bootargs} ${boot_opt}; " \
-			"if run ulbootscript; then " \
-				"run bootscript; " \
-			"else " \
-				"if run ulimage; then " \
-					"if run ulfdt; then " \
-						"booti ${loadaddr} - ${fdt_addr_r}; " \
-					"else " \
-						"if test ${boot_fdt} != yes; then " \
-							"booti ${loadaddr}; " \
-						"fi; " \
-					"fi; " \
-				"fi; " \
-			"fi; " \
-		"done; "
+		"done; " \
+		"part size mmc ${emmc_dev} ${boot_part} boot_part_size" \
+		"read mmc ${emmc_dev}:${boot_part} 0x48000000 0 0x$(boot_part_size)" \
+		"bootm 0x48000000"
 #endif
 
 /* Link Definitions */

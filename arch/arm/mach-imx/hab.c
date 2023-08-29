@@ -914,13 +914,17 @@ int imx_hab_authenticate_image(uint32_t ddr_start, uint32_t image_size,
 	bytes = image_size;
 
 	/* Verify CSF */
-	if (!csf_is_valid(ivt, start, bytes))
+	if (!csf_is_valid(ivt, start, bytes)) {
+		puts("csf is invalid\n");
 		goto hab_authentication_exit;
+	}
+	puts("csf is valid\n");
 
 	if (hab_rvt_entry() != HAB_SUCCESS) {
 		puts("hab entry function fail\n");
 		goto hab_exit_failure_print_status;
 	}
+	puts("hab entry valid\n");
 
 	status = hab_rvt_check_target(HAB_TGT_MEMORY, (void *)(ulong)ddr_start, bytes);
 	if (status != HAB_SUCCESS) {
@@ -928,6 +932,8 @@ int imx_hab_authenticate_image(uint32_t ddr_start, uint32_t image_size,
 		       ddr_start, ddr_start + (ulong)bytes);
 		goto hab_exit_failure_print_status;
 	}
+	puts("hab check target good\n");
+
 #ifdef DEBUG
 	printf("\nivt_offset = 0x%x, ivt addr = 0x%lx\n", ivt_offset, ivt_addr);
 	printf("ivt entry = 0x%08x, dcd = 0x%08x, csf = 0x%08x\n", ivt->entry,
@@ -986,6 +992,8 @@ int imx_hab_authenticate_image(uint32_t ddr_start, uint32_t image_size,
 		puts("hab exit function fail\n");
 		load_addr = 0;
 	}
+
+	printf("hab auth load = 0x%08lx\n", load_addr);
 
 hab_exit_failure_print_status:
 #if !defined(CONFIG_SPL_BUILD)

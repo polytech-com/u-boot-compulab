@@ -1019,6 +1019,7 @@ int authenticate_image(u32 ddr_start, u32 raw_image_size)
 	bytes = ivt_offset + IVT_SIZE + CSF_PAD_SIZE;
 
 	ret = imx_hab_authenticate_image(ddr_start, bytes, ivt_offset);
-	printf("hab auth ret = d, img: %u size: %u\n", ret, ddr_start, raw_image_size);
+	printf("hab auth ret = %d, img: %u size: %u ivt offset: %u tot sz: %u\n",
+		ret, ddr_start, raw_image_size, ivt_offset, bytes);
 	return ret;
 }

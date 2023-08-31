@@ -837,6 +837,14 @@ static int validate_ivt(struct ivt *ivt_initial)
 		return 0;
 	}
 
+	printf("ivt_initial = %p\n",ivt_initial);
+	printf("ivt_initial->entry = 0x%x\n",ivt_initial->entry);
+	printf("ivt_initial->reserved1 = 0x%x\n",ivt_initial->reserved1);
+	printf("ivt_initial->self = 0x%x\n",ivt_initial->self);
+	printf("ivt_initial->csf = 0x%x\n",ivt_initial->csf);
+	printf("ivt_initial->reserved2 = 0x%x\n",ivt_initial->reserved2);
+	printf("ivt_initial->dcd = 0x%x\n",ivt_initial->dcd);
+
 	/* Check IVT fields before allowing authentication */
 	if ((!verify_ivt_header(ivt_hdr)) && \
 	    (ivt_initial->entry != 0x0) && \

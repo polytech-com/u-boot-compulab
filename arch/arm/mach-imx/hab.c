@@ -837,7 +837,10 @@ static int validate_ivt(struct ivt *ivt_initial)
 		return 0;
 	}
 
-	printf("ivt_initial = %p\n",ivt_initial);
+	printf("ivt_initial = 0x%p\n",ivt_initial);
+	printf("ivt_initial->hdr->magic = 0x%x\n", (uint32_t)ivt_initial->hdr->magic);
+	printf("ivt_initial->hdr->length = 0x%x\n",(uint32_t)ivt_initial->hdr->length);
+	printf("ivt_initial->hdr->version = 0x%x\n",(uint32_t)ivt_initial->hdr->version);
 	printf("ivt_initial->entry = 0x%x\n",ivt_initial->entry);
 	printf("ivt_initial->reserved1 = 0x%x\n",ivt_initial->reserved1);
 	printf("ivt_initial->self = 0x%x\n",ivt_initial->self);

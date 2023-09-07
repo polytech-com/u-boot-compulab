@@ -79,7 +79,7 @@
 	"bsp_script=boot.scr\0" \
 	"image=Image\0" \
 	"splashimage=0x50000000\0" \
-	"console=ttymxc1,115200 console=tty1\0" \
+	"console=tty1 console=ttymxc1,115200\0" \
 	"fdt_addr_r=0x43000000\0"			\
 	"fdt_addr=0x43000000\0"			\
 	"boot_fdt=try\0" \
@@ -135,7 +135,7 @@
 		"boot_part=1\0" \
 		"root_opt=rootwait rw\0" \
 		"emmc_ul=setenv iface mmc; setenv dev ${emmc_dev}; setenv part ${boot_part};" \
-		"setenv bootargs console=${console} root=${emmc_root} ${root_opt} init=/sbin/preinit ${rauc_slot};\0" \
+		"setenv bootargs panic=5 console=${console} root=${emmc_root} ${root_opt} init=/sbin/preinit ${rauc_slot};\0" \
 		"sd_ul=setenv iface mmc; setenv dev ${sd_dev}; setenv part ${boot_part};" \
 			"setenv bootargs console=${console} root=${sd_root} ${root_opt};\0" \
 		"usb_ul=usb start; setenv iface usb; setenv dev ${usb_dev}; setenv part ${boot_part};" \

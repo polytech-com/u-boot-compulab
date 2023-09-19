@@ -94,7 +94,7 @@
 	"boot_part=1\0" \
 	"root_opt=rootwait rw\0" \
 	"emmc_ul=setenv iface mmc; setenv dev ${emmc_dev}; setenv part ${boot_part};" \
-		"setenv bootargs panic=5 console=${console} root=${emmc_root} ${root_opt} init=/sbin/preinit ${rauc_slot};\0" \
+		"setenv bootargs panic=5 console=${console} root=${emmc_root} ${root_opt} ${rauc_slot};\0" \
 	"bootlist=rauc_ul emmc_ul\0" \
 	"rauc_ul=test -n \"${BOOT_ORDER}\" || setenv BOOT_ORDER A B; " \
 		"test -n \"${BOOT_A_LEFT}\" || setenv BOOT_A_LEFT 3; " \

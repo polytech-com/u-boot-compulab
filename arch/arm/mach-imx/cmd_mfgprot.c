@@ -51,13 +51,15 @@ static int do_mfgprot(struct cmd_tbl *cmdtp, int flag, int argc, char *const arg
 				   FSL_CAAM_ORSR_JRa_OFFSET);
 
 	if (out_jr_size != FSL_CAAM_MAX_JR_SIZE)
-		sec_init();
+		if (sec_init())
+			printf("\nsec_init failed!\n");
 
 	if (strcmp(sel, pubk) == 0) {
 		dst_ptr = malloc_cache_aligned(FSL_CAAM_MP_PUBK_BYTES);
 		if (!dst_ptr)
 			return -ENOMEM;
 
+		printf("Generating...\n");
 		ret = gen_mppubk(dst_ptr);
 		if (ret) {
 			free(dst_ptr);

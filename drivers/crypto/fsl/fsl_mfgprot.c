@@ -80,7 +80,7 @@ int gen_mppubk(u8 *dst)
 	dsc = memalign(ARCH_DMA_MINALIGN,
 		       sizeof(uint32_t) * MFG_PUBK_DSC_WORDS);
 	if (!dsc) {
-		debug("Not enough memory for descriptor allocation\n");
+		printf("Not enough memory for descriptor allocation\n");
 		return -ENOMEM;
 	}
 
@@ -94,11 +94,11 @@ int gen_mppubk(u8 *dst)
 	flush_dcache_range((unsigned long)dst, (unsigned long)dst + size);
 
 	/* Execute Job Descriptor */
-	debug("\nGenerating Manufacturing Protection Public Key\n");
+	printf("\nGenerating Manufacturing Protection Public Key\n");
 
 	ret = run_descriptor_jr(dsc);
 	if (ret) {
-		debug("Error in public key generation %d\n", ret);
+		printf("Error in public key generation %d\n", ret);
 		goto err;
 	}
 
@@ -118,7 +118,7 @@ int sign_mppubk(const u8 *m, int data_size, u8 *dgst, u8 *c, u8 *d)
 	dsc = memalign(ARCH_DMA_MINALIGN,
 		       sizeof(uint32_t) * MFG_SIGN_DSC_WORDS);
 	if (!dsc) {
-		debug("Not enough memory for descriptor allocation\n");
+		printf("Not enough memory for descriptor allocation\n");
 		return -ENOMEM;
 	}
 
@@ -143,7 +143,7 @@ int sign_mppubk(const u8 *m, int data_size, u8 *dgst, u8 *c, u8 *d)
 
 	ret = run_descriptor_jr(dsc);
 	if (ret) {
-		debug("Error in public key generation %d\n", ret);
+		printf("Error in public key generation %d\n", ret);
 		goto err;
 	}
 

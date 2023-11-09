@@ -981,7 +981,7 @@ static void run_ucmd(char *cmd_parameter, char *response)
 	} else {
 		fastboot_okay(NULL, response);
 		/* cmd may impact fastboot related environment*/
-		fastboot_setup();
+		// fastboot_setup();
 	}
 }
 

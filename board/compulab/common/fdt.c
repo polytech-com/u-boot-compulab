@@ -28,7 +28,9 @@ void fdt_set_sn(void *blob)
 	fdt_setprop(blob, 0, "product-sn", buf, sprintf(buf, "%llx", serialnr.u) + 1);
 
 	cpl_get_sb_serial(&serialnr.s);
-	fdt_setprop(blob, 0, "baseboard-sn", buf, sprintf(buf, "%llx", serialnr.u) + 1);
+	len = sprintf(buf, "%llx", serialnr.u) + 1;
+	buf[7] = '-';
+	fdt_setprop(blob, 0, "baseboard-sn", buf, len);
 
 	rev = cl_eeprom_get_som_revision();
 	fdt_setprop(blob, 0, "product-revision", buf,

@@ -18,13 +18,13 @@
 
 #define   LCD_XSIZE_TFT   720
 #define   LCD_YSIZE_TFT   1280
-#define   PCLOCK          62000
-#define   LCD_VBPD        20
+#define   PCLOCK          60000000
+#define   LCD_VBPD        30
 #define   LCD_VFPD        10
-#define   LCD_VSPW        10
-#define   LCD_HBPD        30
-#define   LCD_HFPD        10
-#define   LCD_HSPW        20
+#define   LCD_VSPW        20
+#define   LCD_HBPD        10
+#define   LCD_HFPD        20
+#define   LCD_HSPW        10
 
 enum ili9881c_op {
     ILI9881C_SWITCH_PAGE,
@@ -260,13 +260,14 @@ static const struct ili9881c_instr ili9881c_init[] = {
 
 struct ili9881c_panel_priv {
 	struct gpio_desc reset;
+	struct display_timing timing;
 	unsigned int lanes;
 	enum mipi_dsi_pixel_format format;
 	unsigned long mode_flags;
 };
 
-static const struct display_timing default_timing = {
-	.pixelclock.typ		= ( 61776000 << 1 ),
+static struct display_timing default_timing = {
+	.pixelclock.typ		= PCLOCK,
 	.hactive.typ		= LCD_XSIZE_TFT,
 	.hfront_porch.typ	= LCD_HFPD,
 	.hback_porch.typ	= LCD_HBPD,
@@ -275,9 +276,6 @@ static const struct display_timing default_timing = {
 	.vfront_porch.typ	= LCD_VFPD,
 	.vback_porch.typ	= LCD_VBPD,
 	.vsync_len.typ		= LCD_VSPW,
-	.flags = DISPLAY_FLAGS_HSYNC_LOW |
-		 DISPLAY_FLAGS_VSYNC_LOW |
-		 DISPLAY_FLAGS_DE_LOW,
 };
 
 static u8 color_format_from_dsi_format(enum mipi_dsi_pixel_format format)
@@ -425,6 +423,42 @@ static int ili9881c_panel_enable_backlight(struct udevice *dev)
 	return 0;
 }
 
+static void ili9881c_panel_show_display_timing(struct udevice *dev, struct display_timing *timing) {
+	dev_dbg(dev,"\n");
+	dev_dbg(dev,"LCD: %dx%d, bpp=%d, clk=%d Hz\n",
+		timing->hactive.typ, timing->vactive.typ,
+		24, timing->pixelclock.typ);
+	dev_dbg(dev,"     hbp=%d, hfp=%d, hsw=%d\n",
+		timing->hback_porch.typ, timing->hfront_porch.typ,
+		timing->hsync_len.typ);
+	dev_dbg(dev,"     vbp=%d, vfp=%d, vsw=%d\n",
+		timing->vback_porch.typ, timing->vfront_porch.typ,
+		timing->vsync_len.typ);
+	return;
+}
+
+static int ili9881c_panel_of_to_plat(struct udevice *dev)
+{
+	struct ili9881c_panel_priv *priv = dev_get_priv(dev);
+	int err;
+
+	dev_dbg(dev,"\ndriver: timing");
+	ili9881c_panel_show_display_timing(dev, &default_timing);
+
+	err = ofnode_decode_display_timing(dev_ofnode(dev), 0, &priv->timing);
+	if (err) {
+		dev_warn(dev, "dtb: no display timings provided\n");
+		return 0;
+	}
+
+	memcpy(&default_timing, &priv->timing, sizeof(struct display_timing));
+
+	dev_dbg(dev,"\ndevice-tree: timing");
+	ili9881c_panel_show_display_timing(dev, &default_timing);
+
+	return 0;
+}
+
 static int ili9881c_panel_get_display_timing(struct udevice *dev,
 					    struct display_timing *timings)
 {
@@ -497,8 +531,19 @@ static const struct panel_ops ili9881c_panel_ops = {
 	.get_display_timing = ili9881c_panel_get_display_timing,
 };
 
+struct ili_platform_data {
+	int (*enable)(struct udevice *dev);
+};
+
+static int ili_enable(struct udevice *dev) {
+	return 0;
+}
+
+static const struct ili_platform_data ili_data = {
+	.enable = &ili_enable,
+};
 static const struct udevice_id ili9881c_panel_ids[] = {
-	{ .compatible = "startek,ili9881c" },
+	{ .compatible = "startek,ili9881c", .data = (ulong)&ili_data },
 	{ }
 };
 
@@ -507,7 +552,9 @@ U_BOOT_DRIVER(ili9881c_panel) = {
 	.id			  = UCLASS_PANEL,
 	.of_match		  = ili9881c_panel_ids,
 	.ops			  = &ili9881c_panel_ops,
+	.of_to_plat		  = ili9881c_panel_of_to_plat,
 	.probe			  = ili9881c_panel_probe,
 	.remove			  = ili9881c_panel_disable,
+	.plat_auto		= sizeof(struct mipi_dsi_panel_plat),
 	.priv_auto		= sizeof(struct ili9881c_panel_priv),
 };

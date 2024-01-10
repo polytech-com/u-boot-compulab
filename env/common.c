@@ -97,10 +97,14 @@ int eth_env_set_enetaddr(const char *name, const uint8_t *enetaddr)
 {
 	char buf[ARP_HLEN_ASCII + 1];
 
-	if (eth_env_get_enetaddr(name, (uint8_t *)buf))
+	if (eth_env_get_enetaddr(name, (uint8_t *)buf)) {
+		printf("unable to overwrite env: %s", name);
 		return -EEXIST;
+	}
 
 	sprintf(buf, "%pM", enetaddr);
+
+	printf("setting env: %s to %s", name, buf);
 
 	return env_set(name, buf);
 }

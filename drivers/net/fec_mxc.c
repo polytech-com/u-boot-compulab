@@ -403,6 +403,7 @@ static void fec_rbd_clean(int last, struct fec_bd *prbd)
 
 static int fec_get_hwaddr(int dev_id, unsigned char *mac)
 {
+	puts("getting MAC for device %d\n", dev_id);
 	imx_get_mac_from_fuse(dev_id, mac);
 	return !is_valid_ethaddr(mac);
 }
@@ -1127,6 +1128,8 @@ static int fec_probe(struct bd_info *bd, int dev_id, uint32_t base_addr,
 	uint32_t start;
 	int ret = 0;
 
+	puts("fec_probe called\n");
+
 	/* create and fill edev struct */
 	edev = (struct eth_device *)malloc(sizeof(struct eth_device));
 	if (!edev) {
@@ -1190,7 +1193,7 @@ static int fec_probe(struct bd_info *bd, int dev_id, uint32_t base_addr,
 	edev->index = fec->dev_id;
 
 	if (fec_get_hwaddr(fec->dev_id, ethaddr) == 0) {
-		debug("got MAC%d address from fuse: %pM\n", fec->dev_id, ethaddr);
+		puts("got MAC%d address from fuse: %pM\n", fec->dev_id, ethaddr);
 		memcpy(edev->enetaddr, ethaddr, 6);
 		if (fec->dev_id)
 			sprintf(mac, "eth%daddr", fec->dev_id);

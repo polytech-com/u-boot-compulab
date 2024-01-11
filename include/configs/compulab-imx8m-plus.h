@@ -59,7 +59,6 @@
 	"jh_netboot=setenv fdtfile ucm-imx8m-plus-root.dtb; setenv jh_clk clk_ignore_unused mem=2048MB; run netboot; \0 "
 
 #define CONFIG_MFG_ENV_SETTINGS \
-	CONFIG_MFG_ENV_SETTINGS_DEFAULT \
 	"initrd_addr=0x43800000\0" \
 	"initrd_high=0xffffffffffffffff\0" \
 	"emmc_dev=2\0"\

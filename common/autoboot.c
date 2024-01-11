@@ -457,8 +457,9 @@ const char *bootdelay_process(void)
 		disconnect_from_pc();
 		printf("Boot from USB for mfgtools\n");
 		bootdelay = 0;
-		env_set_default("Use default environment for \
-				 mfgtools\n", 0);
+		// Disabled by Polytech - at this point it wipes some important enviroment variables such as mac addresses
+		// env_set_default("Use default environment for \
+		//		 mfgtools\n", 0);*/
 	} else if (is_boot_from_usb()) {
 		printf("Boot from USB for uuu\n");
 		env_set("bootcmd", "fastboot 0");

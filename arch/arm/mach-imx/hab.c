@@ -33,7 +33,6 @@ DECLARE_GLOBAL_DATA_PTR;
 #define HAB_M4_PERSISTENT_BYTES		0xB80
 #endif
 
-#define DEBUG 1
 static int ivt_header_error(const char *err_str, struct ivt_header *ivt_hdr)
 {
 	printf("%s magic=0x%x length=0x%02x version=0x%x\n", err_str,

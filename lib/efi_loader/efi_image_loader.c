@@ -813,11 +813,13 @@ efi_status_t efi_load_pe(struct efi_loaded_image_obj *handle,
 		return EFI_LOAD_ERROR;
 	}
 
+#if 0
 	ret = efi_check_csf(efi, efi_size, (void **)&nt);
 	if (ret != EFI_SUCCESS) {
 		log_err("CSF Errot\n");
 		return EFI_LOAD_ERROR;
 	}
+#endif
 
 	for (i = 0; machines[i]; i++)
 		if (machines[i] == nt->FileHeader.Machine) {

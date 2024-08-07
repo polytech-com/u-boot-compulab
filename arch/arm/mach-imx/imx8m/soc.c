@@ -931,13 +931,19 @@ int disable_vpu_nodes(void *blob)
 	static const char * const nodes_path_8mm[] = {
 		"/vpu_g1@38300000",
 		"/vpu_g2@38310000",
-		"/vpu_h1@38320000"
+		"/vpu_h1@38320000",
+		"/soc@0/blk-ctrl@38330000"
 	};
 
 	static const char * const nodes_path_8mp[] = {
 		"/vpu_g1@38300000",
 		"/vpu_g2@38310000",
-		"/vpu_vc8000e@38320000"
+		"/vpu_vc8000e@38320000",
+		"/soc@0/blk-ctl@38330000",
+		"/soc@0/bus@30000000/gpc@303a0000/pgc/power-domain@19",
+		"/soc@0/bus@30000000/gpc@303a0000/pgc/power-domain@20",
+		"/soc@0/bus@30000000/gpc@303a0000/pgc/power-domain@21",
+		"/soc@0/bus@30000000/gpc@303a0000/pgc/power-domain@22"
 	};
 
 	if (is_imx8mq())
@@ -1704,7 +1710,7 @@ void do_error(struct pt_regs *pt_regs, unsigned int esr)
 #endif
 #endif
 
-#if defined(CONFIG_IMX8MN) /*|| defined(CONFIG_IMX8MP)*/
+#if defined(CONFIG_IMX8MN) || defined(CONFIG_IMX8MP)
 enum env_location env_get_location(enum env_operation op, int prio)
 {
 	enum boot_device dev = get_boot_device();

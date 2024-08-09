@@ -178,6 +178,16 @@ int do_bootm(struct cmd_tbl *cmdtp, int flag, int argc, char *const argv[])
 		       return 1;
 		}
 		break;
+/* From https://community.nxp.com/t5/i-MX-Processors/Patch-for-u-boot-imx-Using-FIT-and-HAB-in-bootm-command/m-p/1164472 */
+#ifdef CONFIG_FIT
+	case IMAGE_FORMAT_FIT:
+		if (authenticate_image(image_load_addr,
+			fit_get_size((void *)image_load_addr)) != 0) {
+			printf("Authenticate FIT image Fail, Please check\n");
+			return 1;
+		}
+		break;
+#endif
 	default:
 		printf("Not valid image format for Authentication, Please check\n");
 		return 1;

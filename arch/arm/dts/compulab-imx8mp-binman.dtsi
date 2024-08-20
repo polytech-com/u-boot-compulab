@@ -88,6 +88,22 @@
 					};
 				};
 
+#ifdef CONFIG_OPTEE
+				optee {
+					description = "OP-TEE";
+					type = "firmware";
+					arch = "arm64";
+					os = "tee";
+					compression = "none";
+					load = <0x56000000>;
+					entry = <0x56000000>;
+
+					blob-ext {
+						filename = "tee.bin";
+					};
+				};
+#endif
+
 				@fdt-SEQ {
 					description = "NAME";
 					type = "flat_dt";
@@ -106,7 +122,11 @@
 					description = "NAME";
 					fdt = "fdt-SEQ";
 					firmware = "uboot";
+#ifdef CONFIG_OPTEE
 					loadables = "atf", "optee";
+#else
+					loadables = "atf";
+#endif
 				};
 			};
 		};

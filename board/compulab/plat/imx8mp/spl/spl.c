@@ -16,6 +16,7 @@
 #include <asm/io.h>
 #include <errno.h>
 #include <asm/io.h>
+#include <asm/sections.h>
 #include <asm/mach-imx/iomux-v3.h>
 #include <asm/arch/imx8mp_pins.h>
 #include <asm/arch/sys_proto.h>

@@ -88,20 +88,6 @@
 					};
 				};
 
-				optee {
-					description = "OP-TEE";
-					type = "firmware";
-					arch = "arm64";
-					os = "tee";
-					compression = "none";
-					load = <0x56000000>;
-					entry = <0x56000000>;
-
-					blob-ext {
-						filename = "tee.bin";
-					};
-				};
-
 				@fdt-SEQ {
 					description = "NAME";
 					type = "flat_dt";
